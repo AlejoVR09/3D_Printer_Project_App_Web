@@ -1,4 +1,43 @@
+<!-- Header -->
+<header class="header">
+  <div class="header-content">
+    <div class="logo">
+      <a routerLink="/">
+        <img src="assets/images/logo.png" alt="Printify" class="logo-image">
+        <span>Printify</span>
+      </a>
+    </div>
+    
+    <nav class="main-nav">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+      <a routerLink="/shop" routerLinkActive="active">Shop</a>
+      <a routerLink="/create" routerLinkActive="active">Create</a>
+      <a routerLink="/learn" routerLinkActive="active">Learn</a>
+    </nav>
 
+    <div class="header-actions">
+      <div class="search-bar">
+        <input type="text" placeholder="Search" class="search-input">
+        <button class="search-button">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+
+      <div class="user-actions">
+        <a routerLink="/wishlist" class="icon-button">
+          <i class="far fa-heart"></i>
+        </a>
+        <a routerLink="/cart" class="icon-button">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count" *ngIf="cartItemCount > 0">{{cartItemCount}}</span>
+        </a>
+        <a routerLink="/profile" class="user-profile">
+          <img src="assets/images/default-avatar.png" alt="User Profile" class="profile-image">
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
 
 <!-- Main Content -->
 <main class="main-content">

@@ -14,4 +14,7 @@ export interface Product {
   careInstructions?: string;
   rating?: number;
   inStock: boolean;
+  isFeatured?: boolean;
+  isNew?: boolean;
+  isOnSale?: boolean;
 } 

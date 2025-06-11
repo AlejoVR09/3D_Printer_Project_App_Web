@@ -8,7 +8,7 @@ import { Product } from '../../shared/interfaces/product.interface';
   standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
   featuredProducts: Product[] = [
