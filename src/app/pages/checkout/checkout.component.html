@@ -1,1 +1,311 @@
-<p>checkout works!</p>
+<div class="checkout-container">
+  <!-- Progress Steps -->
+  <div class="checkout-progress">
+    <div class="progress-step" [class.active]="checkoutState.currentStep >= 1">
+      <div class="step-number">1</div>
+      <div class="step-label">Shipping</div>
+    </div>
+    <div class="progress-line" [class.active]="checkoutState.currentStep >= 2"></div>
+    <div class="progress-step" [class.active]="checkoutState.currentStep >= 2">
+      <div class="step-number">2</div>
+      <div class="step-label">Payment</div>
+    </div>
+    <div class="progress-line" [class.active]="checkoutState.currentStep >= 3"></div>
+    <div class="progress-step" [class.active]="checkoutState.currentStep >= 3">
+      <div class="step-number">3</div>
+      <div class="step-label">Review</div>
+    </div>
+    <div class="progress-line" [class.active]="checkoutState.currentStep >= 4"></div>
+    <div class="progress-step" [class.active]="checkoutState.currentStep >= 4">
+      <div class="step-number">4</div>
+      <div class="step-label">Confirmation</div>
+    </div>
+  </div>
+
+  <div class="checkout-content">
+    <!-- Shipping Information -->
+    <div class="checkout-step" *ngIf="checkoutState.currentStep === 1">
+      <h2>Shipping Information</h2>
+      <form #shippingForm="ngForm" (ngSubmit)="onShippingSubmit(checkoutState.shippingInfo)">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input 
+              type="text" 
+              id="firstName" 
+              name="firstName"
+              [(ngModel)]="checkoutState.shippingInfo.firstName"
+              required
+            >
+          </div>
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input 
+              type="text" 
+              id="lastName" 
+              name="lastName"
+              [(ngModel)]="checkoutState.shippingInfo.lastName"
+              required
+            >
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email"
+              [(ngModel)]="checkoutState.shippingInfo.email"
+              required
+            >
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input 
+              type="tel" 
+              id="phone" 
+              name="phone"
+              [(ngModel)]="checkoutState.shippingInfo.phone"
+              required
+            >
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="address">Address</label>
+          <input 
+            type="text" 
+            id="address" 
+            name="address"
+            [(ngModel)]="checkoutState.shippingInfo.address"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="apartment">Apartment, suite, etc. (optional)</label>
+          <input 
+            type="text" 
+            id="apartment" 
+            name="apartment"
+            [(ngModel)]="checkoutState.shippingInfo.apartment"
+          >
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="city">City</label>
+            <input 
+              type="text" 
+              id="city" 
+              name="city"
+              [(ngModel)]="checkoutState.shippingInfo.city"
+              required
+            >
+          </div>
+          <div class="form-group">
+            <label for="state">State</label>
+            <input 
+              type="text" 
+              id="state" 
+              name="state"
+              [(ngModel)]="checkoutState.shippingInfo.state"
+              required
+            >
+          </div>
+          <div class="form-group">
+            <label for="zipCode">ZIP Code</label>
+            <input 
+              type="text" 
+              id="zipCode" 
+              name="zipCode"
+              [(ngModel)]="checkoutState.shippingInfo.zipCode"
+              required
+            >
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="country">Country</label>
+          <select 
+            id="country" 
+            name="country"
+            [(ngModel)]="checkoutState.shippingInfo.country"
+            required
+          >
+            <option value="">Select a country</option>
+            <option value="US">United States</option>
+            <option value="CA">Canada</option>
+            <option value="MX">Mexico</option>
+          </select>
+        </div>
+
+        <div class="form-actions">
+          <a routerLink="/cart" class="btn-secondary">Back to Cart</a>
+          <button type="submit" class="btn-primary" [disabled]="!shippingForm.valid">
+            Continue to Payment
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Payment Information -->
+    <div class="checkout-step" *ngIf="checkoutState.currentStep === 2">
+      <h2>Payment Information</h2>
+      <form #paymentForm="ngForm" (ngSubmit)="onPaymentSubmit(checkoutState.paymentInfo)">
+        <div class="form-group">
+          <label for="cardNumber">Card Number</label>
+          <input 
+            type="text" 
+            id="cardNumber" 
+            name="cardNumber"
+            [(ngModel)]="checkoutState.paymentInfo.cardNumber"
+            (input)="formatCardNumber($event)"
+            maxlength="19"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="cardHolder">Card Holder Name</label>
+          <input 
+            type="text" 
+            id="cardHolder" 
+            name="cardHolder"
+            [(ngModel)]="checkoutState.paymentInfo.cardHolder"
+            required
+          >
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="expiryDate">Expiry Date</label>
+            <input 
+              type="text" 
+              id="expiryDate" 
+              name="expiryDate"
+              [(ngModel)]="checkoutState.paymentInfo.expiryDate"
+              (input)="formatExpiryDate($event)"
+              placeholder="MM/YY"
+              maxlength="5"
+              required
+            >
+          </div>
+          <div class="form-group">
+            <label for="cvv">CVV</label>
+            <input 
+              type="text" 
+              id="cvv" 
+              name="cvv"
+              [(ngModel)]="checkoutState.paymentInfo.cvv"
+              (input)="validateCVV($event)"
+              maxlength="3"
+              required
+            >
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" (click)="previousStep()">Back</button>
+          <button type="submit" class="btn-primary" [disabled]="!paymentForm.valid">
+            Review Order
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Order Review -->
+    <div class="checkout-step" *ngIf="checkoutState.currentStep === 3">
+      <h2>Review Your Order</h2>
+      
+      <div class="review-section">
+        <h3>Shipping Information</h3>
+        <div class="review-info">
+          <p>{{checkoutState.shippingInfo.firstName}} {{checkoutState.shippingInfo.lastName}}</p>
+          <p>{{checkoutState.shippingInfo.address}}</p>
+          <p *ngIf="checkoutState.shippingInfo.apartment">{{checkoutState.shippingInfo.apartment}}</p>
+          <p>{{checkoutState.shippingInfo.city}}, {{checkoutState.shippingInfo.state}} {{checkoutState.shippingInfo.zipCode}}</p>
+          <p>{{checkoutState.shippingInfo.country}}</p>
+          <p>{{checkoutState.shippingInfo.email}}</p>
+          <p>{{checkoutState.shippingInfo.phone}}</p>
+        </div>
+      </div>
+
+      <div class="review-section">
+        <h3>Payment Information</h3>
+        <div class="review-info">
+          <p>Card ending in {{checkoutState.paymentInfo.cardNumber.slice(-4)}}</p>
+          <p>{{checkoutState.paymentInfo.cardHolder}}</p>
+        </div>
+      </div>
+
+      <div class="review-section">
+        <h3>Order Summary</h3>
+        <div class="order-items">
+          <div class="order-item" *ngFor="let item of cart.items">
+            <img [src]="item.product.imageUrl" [alt]="item.product.name">
+            <div class="item-details">
+              <h4>{{item.product.name}}</h4>
+              <p *ngIf="item.color">Color: {{item.color}}</p>
+              <p>Quantity: {{item.quantity}}</p>
+              <p class="item-price">${{(item.product.price * item.quantity).toFixed(2)}}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="order-summary">
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span>${{cart.subtotal.toFixed(2)}}</span>
+          </div>
+          <div class="summary-row">
+            <span>Shipping</span>
+            <span *ngIf="cart.shipping > 0">${{cart.shipping.toFixed(2)}}</span>
+            <span *ngIf="cart.shipping === 0" class="free-shipping">Free</span>
+          </div>
+          <div class="summary-row">
+            <span>Tax</span>
+            <span>${{cart.tax.toFixed(2)}}</span>
+          </div>
+          <div class="summary-row total">
+            <span>Total</span>
+            <span>${{cart.total.toFixed(2)}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="previousStep()">Back</button>
+        <button 
+          type="button" 
+          class="btn-primary" 
+          (click)="onConfirmOrder()"
+          [disabled]="isProcessing"
+        >
+          <span *ngIf="!isProcessing">Place Order</span>
+          <span *ngIf="isProcessing">Processing...</span>
+        </button>
+      </div>
+
+      <div class="error-message" *ngIf="error">
+        {{error}}
+      </div>
+    </div>
+
+    <!-- Order Confirmation -->
+    <div class="checkout-step" *ngIf="checkoutState.currentStep === 4">
+      <div class="confirmation-message">
+        <i class="fas fa-check-circle"></i>
+        <h2>Thank You for Your Order!</h2>
+        <p>Your order has been successfully placed.</p>
+        <p>Order confirmation and tracking information will be sent to {{checkoutState.shippingInfo.email}}</p>
+        
+        <div class="confirmation-actions">
+          <a routerLink="/shop" class="btn-primary">Continue Shopping</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,1 +1,111 @@
-<p>product-detail works!</p>
+<div class="product-detail-container">
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    <a routerLink="/">Home</a> / 
+    <a routerLink="/shop">Shop</a> / 
+    <span>{{product?.name}}</span>
+  </div>
+
+  <div class="product-detail">
+    <!-- Product Images -->
+    <div class="product-images">
+      <div class="main-image">
+        <img [src]="product?.imageUrl" [alt]="product?.name">
+      </div>
+      <div class="thumbnail-images">
+        <img [src]="product?.imageUrl" [alt]="product?.name">
+        <img [src]="product?.imageUrl" [alt]="product?.name">
+        <img [src]="product?.imageUrl" [alt]="product?.name">
+      </div>
+    </div>
+
+    <!-- Product Info -->
+    <div class="product-info">
+      <h1>{{product?.name}}</h1>
+      
+      <div class="rating">
+        <div class="stars">
+          <i class="fas fa-star" *ngFor="let star of [1,2,3,4,5]" 
+             [class.filled]="star <= (product?.rating || 0)"
+             [class.half]="star - 0.5 <= (product?.rating || 0) && star > (product?.rating || 0)"></i>
+        </div>
+        <span class="rating-value">{{product?.rating}}</span>
+      </div>
+
+      <div class="price">${{product?.price}}</div>
+      
+      <p class="description">{{product?.description}}</p>
+
+      <!-- Color Selection -->
+      <div class="color-selection">
+        <h3>Color</h3>
+        <div class="color-options">
+          <button *ngFor="let color of availableColors"
+                  class="color-btn"
+                  [class.selected]="color === selectedColor"
+                  [style.background-color]="color.toLowerCase()"
+                  (click)="selectColor(color)">
+            <span class="color-name">{{color}}</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quantity Selection -->
+      <div class="quantity-selection">
+        <h3>Quantity</h3>
+        <div class="quantity-controls">
+          <button (click)="decreaseQuantity()" [disabled]="selectedQuantity <= 1">
+            <i class="fas fa-minus"></i>
+          </button>
+          <span>{{selectedQuantity}}</span>
+          <button (click)="increaseQuantity()" [disabled]="selectedQuantity >= 10">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button class="add-to-cart" (click)="addToCart()" [disabled]="!product?.inStock">
+          <i class="fas fa-shopping-cart"></i>
+          Add to Cart
+        </button>
+        <button class="add-to-wishlist" (click)="addToWishlist()">
+          <i class="far fa-heart"></i>
+          Add to Wishlist
+        </button>
+      </div>
+
+      <!-- Product Details -->
+      <div class="product-details">
+        <h3>Product Details</h3>
+        <div class="details-grid">
+          <div class="detail-item">
+            <span class="label">Material:</span>
+            <span class="value">{{product?.material}}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Dimensions:</span>
+            <span class="value">{{product?.dimensions?.height}}H x {{product?.dimensions?.width}}W x {{product?.dimensions?.depth}}D cm</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Category:</span>
+            <span class="value">{{product?.category}}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Availability:</span>
+            <span class="value" [class.in-stock]="product?.inStock">
+              {{product?.inStock ? 'In Stock' : 'Out of Stock'}}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Care Instructions -->
+      <div class="care-instructions">
+        <h3>Care Instructions</h3>
+        <p>{{product?.careInstructions}}</p>
+      </div>
+    </div>
+  </div>
+</div>

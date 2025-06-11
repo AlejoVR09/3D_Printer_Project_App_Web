@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { Product } from '../../shared/interfaces/product.interface';
+import { CartService } from '../../shared/services/cart.service';
 
 @Component({
   selector: 'app-product-list',
@@ -79,6 +80,8 @@ export class ProductListComponent implements OnInit {
   ];
   activeTab: string = 'all';
   
+  constructor(private cartService: CartService) {}
+
   ngOnInit(): void {
     // Extract unique categories
     this.categories = [...new Set(this.products.map(product => product.category))];
@@ -145,8 +148,7 @@ export class ProductListComponent implements OnInit {
   }
 
   addToCart(product: Product): void {
-    // This will be implemented when we create the cart service
-    console.log('Adding to cart:', product);
+    this.cartService.addItem(product, 1);
   }
 
   addToWishlist(product: Product): void {

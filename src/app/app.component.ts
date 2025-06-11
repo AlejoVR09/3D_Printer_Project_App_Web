@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { CartService } from './shared/services/cart.service';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,15 @@ import { CommonModule } from '@angular/common';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'three-d-printer-web';
-  cartItemCount = 0; // This will be updated by a cart service
+  cartItemCount = 0;
+
+  constructor(private cartService: CartService) {}
+
+  ngOnInit(): void {
+    this.cartService.getItemCount().subscribe(count => {
+      this.cartItemCount = count;
+    });
+  }
 }
