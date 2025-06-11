@@ -1,0 +1,93 @@
+<div class="product-list-container">
+  <!-- Tab Navigation -->
+  <nav class="product-tabs">
+    <button 
+      *ngFor="let tab of tabs"
+      class="tab-btn"
+      [class.active]="activeTab === tab.id"
+      (click)="setActiveTab(tab.id)"
+    >
+      <i [class]="tab.icon"></i>
+      {{tab.label}}
+    </button>
+  </nav>
+
+  <!-- Filters Section -->
+  <aside class="filters">
+    <div class="filter-section">
+      <h3>Search</h3>
+      <div class="search-box">
+        <input 
+          type="text" 
+          [(ngModel)]="searchQuery" 
+          (ngModelChange)="filterProducts()"
+          placeholder="Search products..."
+          class="search-input"
+        >
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <h3>Categories</h3>
+      <div class="category-filters">
+        <button 
+          class="category-btn" 
+          [class.active]="selectedCategory === ''"
+          (click)="selectedCategory = ''; filterProducts()"
+        >
+          All
+        </button>
+        <button 
+          *ngFor="let category of categories"
+          class="category-btn"
+          [class.active]="selectedCategory === category"
+          (click)="selectedCategory = category; filterProducts()"
+        >
+          {{category}}
+        </button>
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <h3>Sort By</h3>
+      <select [(ngModel)]="sortOption" (ngModelChange)="filterProducts()" class="sort-select">
+        <option value="name">Name (A-Z)</option>
+        <option value="price-low">Price (Low to High)</option>
+        <option value="price-high">Price (High to Low)</option>
+      </select>
+    </div>
+  </aside>
+
+  <!-- Products Grid -->
+  <div class="products-section">
+    <div class="products-header">
+      <h2>{{getActiveTabLabel()}}</h2>
+      <p>{{filteredProducts.length}} items found</p>
+    </div>
+
+    <div class="products-grid">
+      <div *ngFor="let product of filteredProducts" class="product-card">
+        <div class="product-image">
+          <img [src]="product.imageUrl" [alt]="product.name">
+          <button class="wishlist-btn" (click)="addToWishlist(product)">
+            <i class="far fa-heart"></i>
+          </button>
+          <span *ngIf="!product.inStock" class="out-of-stock">Out of Stock</span>
+        </div>
+        <div class="product-info">
+          <h3>{{product.name}}</h3>
+          <p class="description">{{product.description}}</p>
+          <p class="category">{{product.category}}</p>
+          <p class="price">${{product.price}}</p>
+          <button 
+            class="add-to-cart" 
+            (click)="addToCart(product)"
+            [disabled]="!product.inStock"
+          >
+            {{product.inStock ? 'Add to Cart' : 'Out of Stock'}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

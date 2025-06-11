@@ -1,0 +1,87 @@
+<!-- Hero Section -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>Unleash Your Creativity with 3D Printing</h1>
+    <p>Explore a world of custom-designed products, from personalized gifts to unique home decor. Start your 3D printing journey today.</p>
+    <div class="hero-buttons">
+      <a routerLink="/shop" class="btn btn-primary">Shop Now</a>
+      <a routerLink="/create" class="btn btn-secondary">Start Creating</a>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Products -->
+<section class="featured-products">
+  <div class="section-header">
+    <h2>Featured Products</h2>
+    <a routerLink="/shop" class="view-all">View All</a>
+  </div>
+  <div class="products-grid">
+    <div class="product-card" *ngFor="let product of featuredProducts">
+      <div class="product-image">
+        <img [src]="product.imageUrl" [alt]="product.name">
+        <button class="wishlist-btn">
+          <i class="far fa-heart"></i>
+        </button>
+      </div>
+      <div class="product-info">
+        <h3>{{product.name}}</h3>
+        <p class="price">${{product.price}}</p>
+        <button class="add-to-cart" (click)="addToCart(product)">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Categories -->
+<section class="categories">
+  <div class="section-header">
+    <h2>Popular Categories</h2>
+  </div>
+  <div class="categories-grid">
+    <a *ngFor="let category of categories" [routerLink]="['/shop']" [queryParams]="{category: category.id}" class="category-card">
+      <img [src]="category.imageUrl" [alt]="category.name">
+      <h3>{{category.name}}</h3>
+      <p>{{category.description}}</p>
+    </a>
+  </div>
+</section>
+
+<!-- How It Works -->
+<section class="how-it-works">
+  <div class="section-header">
+    <h2>How It Works</h2>
+  </div>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-icon">
+        <i class="fas fa-search"></i>
+      </div>
+      <h3>Browse & Choose</h3>
+      <p>Explore our collection of 3D printable designs or upload your own custom design.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-icon">
+        <i class="fas fa-sliders-h"></i>
+      </div>
+      <h3>Customize</h3>
+      <p>Modify colors, materials, and dimensions to match your preferences.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-icon">
+        <i class="fas fa-print"></i>
+      </div>
+      <h3>Print & Ship</h3>
+      <p>We'll print your design with high-quality materials and ship it to you.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action -->
+<section class="cta">
+  <div class="cta-content">
+    <h2>Ready to Create Something Amazing?</h2>
+    <p>Join thousands of makers and start your 3D printing journey today.</p>
+    <a routerLink="/create" class="btn btn-primary">Get Started</a>
+  </div>
+</section>
